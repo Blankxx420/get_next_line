@@ -1,9 +1,15 @@
 CC = cc
 
+<<<<<<< HEAD
 CFLAGS = -Wall -Werror -Wextra -D BUFFER_SIZE=64 -g
 
 SRCS = 	get_next_line_utils.c \
 		get_next_line.c
+=======
+CFLAGS = -Wall -Werror -Wextra -g
+
+SRCS = get_next_line.c
+>>>>>>> refs/remotes/origin/main
 
 OBJS = $(SRCS:.c=.o)
 
