@@ -6,7 +6,7 @@
 /*   By: brguicho <brguicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:29:31 by brguicho          #+#    #+#             */
-/*   Updated: 2023/11/16 15:53:22 by brguicho         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:04:24 by brguicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 char	*get_next_line(int fd)
 {
-	int index;
-	char *buffer;
-	buffer = malloc(sizeof(char)* BUFFER_SIZE);
+	char		*buffer;
+	static char *finalstr;
+	int			len;
+	
+	len = 0;
+	if (finalstr == NULL)
+		finalstr = ft_calloc(sizeof(char), 1);
+	buffer = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	while (read(fd,buffer,BUFFER_SIZE))
+	len = read(fd,buffer,BUFFER_SIZE);
+	while (len > 0)
 	{
-		if (buffer[index] == '\n')
-			
+		if (buffer[len - 1] == '\n')
+			finalstr = ft_substr(buffer, len, len);
+		len--;	
 	}
+	return (finalstr);
 }
