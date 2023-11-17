@@ -18,7 +18,6 @@
 
 char	*get_next_line(int fd)
 {
-<<<<<<< HEAD
 	char		*buffer;
 	static char *finalstr;
 	int			len;
@@ -37,13 +36,4 @@ char	*get_next_line(int fd)
 		len--;	
 	}
 	return (finalstr);
-=======
-	char *buffer;
-	
-	buffer = malloc(sizeof(char)* BUFFER_SIZE);
-	if (!buffer)
-		return (NULL);
-	read(fd,buffer,BUFFER_SIZE);
-	return (buffer);
->>>>>>> refs/remotes/origin/main
 }
