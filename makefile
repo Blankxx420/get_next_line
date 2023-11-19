@@ -1,8 +1,8 @@
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -D BUFFER_SIZE=64 -g
+CFLAGS = -Wall -Werror -Wextra -D BUFFER_SIZE=42 -g
 
-SRCS = 	get_next_line_utils.c \
+SRCS = get_next_line_utils.c \
 		get_next_line.c
 
 OBJS = $(SRCS:.c=.o)
@@ -15,7 +15,7 @@ $(NAME): $(OBJS)
 	ar cr $(NAME) $(OBJS)
 	$(CC) $(CFLAGS) main.c -I . -L . -lget_next_line
 	make clean
-	valgrind --track-origins=yes ./a.out
+	valgrind ./a.out
 
 %.o: %.c $(SRCS)
 	${CC} ${CFLAGS} -o $@ -c $<

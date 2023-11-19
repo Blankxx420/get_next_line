@@ -9,9 +9,10 @@
 #  define BUFFER_SIZE 64
 # endif
 
-char	*get_next_line(int fd);
-void	*ft_calloc(size_t elementcount, size_t elementcize);
-void	ft_bzero(void *dest, unsigned int size);
-void	*ft_memcpy(void *destination, const void *source, size_t size);
-char	*ft_substr(char *s, unsigned int start, size_t len);
+typedef struct s_list {
+    char            *content;
+    struct s_list   *next;
+}   t_list;
+
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: brguicho <brguicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:30:54 by brguicho          #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:28 by brguicho         ###   ########.fr       */
+/*   Updated: 2023/11/19 11:18:00 by brguicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,4 @@ int	main()
 	int		file;
 	char	*str;
 	file = open("test.txt", O_RDONLY);
-	str = get_next_line(file);
-	printf("%s", str);
-	free(str);
-	close(file);
 }
