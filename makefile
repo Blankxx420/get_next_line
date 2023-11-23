@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -D BUFFER_SIZE=5 -g
+CFLAGS = -Wall -Werror -Wextra -D BUFFER_SIZE=10000000 -g
 
 SRCS = get_next_line_utils.c \
 		get_next_line.c

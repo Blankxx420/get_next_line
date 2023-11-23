@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brguicho <brguicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:29:31 by brguicho          #+#    #+#             */
-/*   Updated: 2023/11/23 14:30:35 by brguicho         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:31:58 by brguicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 char	*get_next_line(int fd)
 {
-	static char *stock;
+	static char *stock[1024];
 	char		*line;
 
-	if (!stock)
-		stock = ft_calloc(1 , 1);
+	if (!stock[fd])
+		stock[fd] = ft_calloc(1 , 1);
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return(NULL);
-	ft_read_and_extract(fd, &stock);
-	line = ft_get_line(stock, line);
-	stock = ft_clean_stock(stock);
-	if (line && !*line && stock && !*stock)
+	ft_read_and_extract(fd, &stock[fd]);
+	line = ft_get_line(stock[fd], line);
+	stock[fd] = ft_clean_stock(stock[fd]);
+	if (line && !*line && stock[fd] && !*stock[fd])
 	{
 		free(line);
-		free(stock);
-		stock = NULL;
+		free(stock[fd]);
+		stock[fd] = NULL;
 		line = NULL;
 		return (NULL);
 	}
