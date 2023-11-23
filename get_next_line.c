@@ -6,7 +6,7 @@
 /*   By: brguicho <brguicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:29:31 by brguicho          #+#    #+#             */
-/*   Updated: 2023/11/19 15:02:42 by brguicho         ###   ########.fr       */
+/*   Updated: 2023/11/23 12:37:48 by brguicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,73 +14,109 @@
 
 char	*get_next_line(int fd)
 {
+	static char *stock;
 	char		*line;
-	static t_list *stash;
-	int			len;
-	
-	len = 1;
-	stash = NULL;
+
+	if (!stock)
+		stock = ft_calloc(sizeof(char), 1);
 	line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return(NULL);
+	if (!line)
+		line = ft_calloc(sizeof(0), 1);
+	ft_read_and_extract(fd, &stock);
+	line = ft_get_line(stock, line);
+	if (line && !*line)
+	{
+		free(line);
+		line = NULL;
 		return (NULL);
-	ft_read_extract_to_stash(fd, &stash, &len);
-	if (stash == NULL)
+	}
+	stock = ft_clean_stock(stock);
+	if (!*line && stock && !*stock)
+	{
+		free(stock);
+		stock = NULL;
 		return (NULL);
-	ft_extract_line(stash, &line);	
+	}
 	return (line);
 }
 
-void	ft_read_extract_to_stash(int fd, t_list **stash, int *len)
+void ft_read_and_extract(int fd, char **stock)
 {
-	char	*buffer;
-	int		i;
+	char 	*buffer;
+	int 	reed;
 	
-	i = 0;
-	while (!found_newline(*stash) && *len != 0)
+	buffer = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
+	if (buffer == NULL)
+		return;
+	while (!ft_check_newline(buffer))
 	{
-		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		free(buffer);
+		buffer = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 		if (buffer == NULL)
 			return;
-		*len = (int)read(fd, buffer, BUFFER_SIZE);
-		if (*stash == NULL && *len == 0 || *len == -1)
+		reed = read(fd, buffer, BUFFER_SIZE);
+		if (reed <= 0)
+		{
 			free(buffer);
 			return;
-		buffer[*len] = '/0';
-		ft_add_to_stash(stash, buffer, *len);
-		free(buffer)
+		}
+		*stock = ft_strjoin(*stock, buffer);
 	}
+	free(buffer);
 }
 
-void	ft_add_to_stash(t_list **stash, char *buffer, int *len)
+char *ft_get_line(char *stock, char *line)
 {
-	int	i;
-	t_list *last;
-	t_list *newnode;
+	int i;
 
 	i = 0;
-	newnode = malloc(sizeof(t_list));
-	if (!newnode)
-		return;
-	newnode->next = NULL;
-	newnode->content = malloc(sizeof(char) * (*len + 1));
-	if (newnode->content == NULL)
-		return;
-	while (buffer[i] && i < *len)
+	while (stock[i] != '\n' && stock[i] != '\0')
+		i++;
+	if (stock[i]== '\n')
+		i++;
+	free(line);
+	line = malloc(sizeof(char) * (i + 1));
+	i = 0;
+	while(stock[i]!= '\n' && stock[i]!= '\0')
 	{
-		newnode->content[i] = buffer[i];
+		line[i] = stock[i];
 		i++;
 	}
-	newnode->content[i] = '\n';
-	if (*stash == NULL)
+	if (stock[i]== '\n')
 	{
-		*stash = newnode;
-		return;
+		line[i] = stock[i];
+		i++;
 	}
-	last = ft_get_lst_last(*stash);
-	last->next = newnode;
+	line[i] = '\0';
+	return (line);
 }
 
-void	ft_extract_line(t_list stash, char **line)
+char *ft_clean_stock(char *stock)
 {
+	int i;
+	char *new_stock;
+	int j;
 	
+	i = 0;
+	while (stock[i] != '\n' && stock[i] != '\0')
+		i++;
+	if (stock[i]== '\n')
+		i++;
+	j = 0;
+	while (stock[i + j])
+		j++;
+	new_stock = ft_calloc(sizeof(char), (j + 1));
+	if (!new_stock)
+		return (NULL);
+	j = 0;
+	while (stock[i + j])
+	{
+		new_stock[j] = stock[i + j];
+		j++;
+	}
+	free(stock);
+	new_stock[j] = '\0';
+	return (new_stock);
 }
