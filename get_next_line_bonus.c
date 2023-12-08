@@ -6,7 +6,7 @@
 /*   By: brguicho <brguicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:29:31 by brguicho          #+#    #+#             */
-/*   Updated: 2023/11/23 14:31:58 by brguicho         ###   ########.fr       */
+/*   Updated: 2023/12/08 13:46:31 by brguicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 char	*get_next_line(int fd)
 {
-	static char *stock[1024];
+	static char	*stock[1024];
 	char		*line;
 
 	if (!stock[fd])
-		stock[fd] = ft_calloc(1 , 1);
+		stock[fd] = ft_calloc(1, 1);
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return(NULL);
+		return (NULL);
 	ft_read_and_extract(fd, &stock[fd]);
 	line = ft_get_line(stock[fd], line);
 	stock[fd] = ft_clean_stock(stock[fd]);
@@ -36,46 +36,46 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-void ft_read_and_extract(int fd, char **stock)
+void	ft_read_and_extract(int fd, char **stock)
 {
-	char 	*buffer;
-	int 	reed;
-	
+	char	*buffer;
+	int		reed;
+
 	buffer = NULL;
 	while (!ft_check_newline(*stock))
 	{
 		free(buffer);
 		buffer = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 		if (buffer == NULL)
-			return;
+			return ;
 		reed = read(fd, buffer, BUFFER_SIZE);
 		if (reed <= 0)
 		{
 			free(buffer);
-			return;
+			return ;
 		}
 		*stock = ft_strjoin(*stock, buffer);
 	}
 	free(buffer);
 }
 
-char *ft_get_line(char *stock, char *line)
+char	*ft_get_line(char *stock, char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (stock[i] != '\n' && stock[i] != '\0')
 		i++;
-	if (stock[i]== '\n')
+	if (stock[i] == '\n')
 		i++;
 	line = malloc(sizeof(char) * (i + 1));
 	i = 0;
-	while(stock[i]!= '\n' && stock[i]!= '\0')
+	while (stock[i] != '\n' && stock[i] != '\0')
 	{
 		line[i] = stock[i];
 		i++;
 	}
-	if (stock[i]== '\n')
+	if (stock[i] == '\n')
 	{
 		line[i] = stock[i];
 		i++;
@@ -84,16 +84,16 @@ char *ft_get_line(char *stock, char *line)
 	return (line);
 }
 
-char *ft_clean_stock(char *stock)
+char	*ft_clean_stock(char *stock)
 {
-	int i;
-	char *new_stock;
-	int j;
-	
+	int		i;
+	char	*new_stock;
+	int		j;
+
 	i = 0;
 	while (stock[i] != '\n' && stock[i] != '\0')
 		i++;
-	if (stock[i]== '\n')
+	if (stock[i] == '\n')
 		i++;
 	j = 0;
 	while (stock[i + j])
@@ -109,4 +109,24 @@ char *ft_clean_stock(char *stock)
 	}
 	free(stock);
 	return (new_stock);
+}
+
+char	*ft_strdup(char *s)
+{
+	char	*str;
+	int		index;
+	int		size;
+
+	index = 0;
+	size = ft_strlen(s);
+	str = malloc(sizeof(char) * (size + 1));
+	if (str == NULL)
+		return (NULL);
+	while (s[index])
+	{
+		str[index] = s[index];
+		index++;
+	}
+	str[index] = '\0';
+	return (str);
 }

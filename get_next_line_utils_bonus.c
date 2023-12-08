@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brguicho <brguicho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 14:42:54 by brguicho          #+#    #+#             */
-/*   Updated: 2023/11/23 13:44:12 by brguicho         ###   ########.fr       */
+/*   Updated: 2023/12/08 13:46:21 by brguicho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int ft_check_newline(char *stock)
+int	ft_check_newline(char *stock)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (stock == NULL)
-		return(0);
+		return (0);
 	while (stock[i])
 	{
 		if (stock[i] == '\n')
 			return (1);
 		i++;
 	}
-	return(stock[i]);
+	return (stock[i]);
 }
 
 void	ft_bzero(void *dest, unsigned int size)
@@ -66,8 +66,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*str;
 	int		size_s1;
 	int		size_s2;
-	int 	index;
-	int 	j;
+	int		index;
+	int		j;
 
 	index = 0;
 	j = 0;
@@ -79,46 +79,19 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (str == NULL)
 		return (NULL);
 	while (index < size_s1)
-	{
-		str[index] = s1[index];
-		index++;
-	}
+		str[index++] = s1[index];
 	while (j < size_s2)
-	{
-		str[index] = s2[j];
-		index++;
-		j++;
-	}
+		str[index++] = s2[j++];
 	free(s1);
 	return (str);
 }
 
 int	ft_strlen(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (str[i])
 		i++;
 	return (i);
-}
-
-char	*ft_strdup(char *s)
-{
-	char	*str;
-	int		index;
-	int		size;
-
-	index = 0;
-	size = ft_strlen(s);
-	str = malloc(sizeof(char) * (size + 1));
-	if (str == NULL)
-		return (NULL);
-	while (s[index])
-	{
-		str[index] = s[index];
-		index++;
-	}
-	str[index] = '\0';
-	return (str);
 }
